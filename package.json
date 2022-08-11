@@ -1,0 +1,22 @@
+{
+  "name": "study-backend",
+  "version": "1.0.0",
+  "description": "백엔드 공부",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jerryjerry0102/study-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jerryjerry0102/study-backend/issues"
+  },
+  "homepage": "https://github.com/Jerryjerry0102/study-backend#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
