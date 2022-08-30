@@ -18,13 +18,18 @@ var person = [
     { name: "김민지", gender: "여자", age: 26, hobby: "영화보기"},
     { name: "박승호", gender: "남자", age: 28, hobby: "음악듣기"}
 ]
+var one = "this is one";
+var two = "this is two";
 
 app.get('/',(req, res) => { 
-    res.render('test2_0',{person: person});
+    res.render('test2_0',{person: person, one: one, two: two});
 });
 
 app.get('/test2_1',(req, res) => {
-    res.render('test2_1',{});
+    res.render('test2_1',{
+        one: "this is one",
+        two: "this is two"
+    });
 });
 
 app.get('/test2_2',(req, res) => {
@@ -90,11 +95,11 @@ app.get("/prac1", (req, res) => {
 })
 app.post("/prac1_post", (req, res) => {
     console.log(req.body);
-    res.render("prac1_post", {
-        name: req.body.name,
-        gender: req.body.gender,
-        birth: req.body.birth
-    })
+    // res.render("prac1_post", {
+    //     name: req.body.name,
+    //     gender: req.body.gender,
+    //     birth: req.body.birth
+    // })
     res.send(req.query);
 })
 
@@ -109,6 +114,22 @@ app.get("/get/axios2", (req, res) => {
         birth: req.query.birth,
         interest: req.query.interest
     }
+    res.send(req.query);
+})
+
+// 집에서 혼자
+app.get("/prac11", (req, res) => {
+    console.log(req.query);
+    res.render("prac11", {})
+})
+app.get("/prac11_post", (req, res) => {
+    // res.render("prac11_post",{
+    //     name: req.query.name,
+    //     gender: req.query.gender,
+    //     year: req.query.year,
+    //     month: res.query.month,
+    //     day: res.query.day
+    // })
     res.send(req.query);
 })
 
