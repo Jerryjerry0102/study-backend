@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- axios cdn -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <form>
+        이름<input type="text" name="name">
+        <br>
+        성별
+        <input type="radio" name="gender" value="남">남자 
+        <input type="radio" name="gender" value="여">여자
+        <br>
+        생년월일
+        <select id="year" name="birth">
+            <option value=""></option>
+        </select>년
+        <select id="month" name="birth">
+            <option value=""></option>
+        </select>월
+        <select id="day" name="birth">
+            <option value=""></option>
+        </select>일
+        <br>
+        관심사
+        <input type="checkbox" name="interest" value="travel">여행
+        <input type="checkbox" name="interest" value="fashion">패션
+        <input type="checkbox" name="interest" value="food">음식
+        <br>
+        <button type="button" onclick="dynamicForm();">회원가입</button>
+    </form>
+    
+
+    <script>
+        $(document).ready(function(){
+            for(var i=1950; i <= 2022; i++){
+                $("#year").append("<option value"+i+">" + i + "</option>");
+            }
+            for(var i=1; i <= 12; i++){
+                $("#month").append("<option value"+i+">" + i + "</option>");
+            }
+            for(var i=1; i <= 31; i++){
+                $("#day").append("<option value"+i+">"+i+"</option>");
+            }
+        })
+        // 집에서 ejs문법으로 해보기
+
+        
+        function dynamicForm(){
+            var form = document.querySelector("form");
+            var interest = "";
+            $("input[name=interest]:checked").each((index, object) => {
+                interest += $(object).val();
+                // interest = interest + $(object).val();
+                if(index != $("input[name=interest]:checked").length -1){
+                    interest += ", "
+                }
+            })
+            console.log(interest);
+            //처음 input태그는 object에 들어가 있음.
+
+            // var interest = "";
+            // $("input[name=interest]:checked").each((index, object)=>{
+            //     interest += $(object).val();
+            //     if(index != $("input[name=interest]:checked").length - 1) interest += ",";
+            // })
+
+            // for(var i=0; i < $("input[name=interest]:checked").length; i++){
+            //     $("input[name=interest]:checked")[i].val()
+            // }
+
+            var birth = "";
+            $("select[name=birth]").each((index, object) => {
+                birth += $(object).val();
+                if(index != $("select[name=birth]").length -1){
+                    birth += "-"
+                }
+            })
+            console.log(birth);
+
+            var data1 = {
+                name: form.name.value,  
+                gender: form.gender.value,
+                birth: birth,
+                interest: interest
+            }
+            axios({
+                url: "/get/axios2",   // 요청할 주소
+                method: "get",    // 통신하고자 하는 방식
+                params : data1
+                }).then((response)=>{
+                console.log(response);
+                    })
+        }
+    </script>
+</body>
+</html>

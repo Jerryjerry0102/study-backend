@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>test2_0</title>
+    </head>
+    <body>
+        <table border="1" cellspacing="0">
+            <tr>
+                <td>이름</td>
+                <td>성별</td>
+                <td>나이</td>
+                <td>취미</td>
+            </tr>
+            <% for(var i=0; i < person.length; i++) { %>
+                <tr>
+                    <td><%= person[i]["name"] %></td>
+                    <td><%= person[i]["gender"] %></td>
+                    <td><%= person[i]["age"] %></td>
+                    <td><%= person[i]["hobby"] %></td>
+                </tr>
+            <% } %>
+        </table>
+        <img src="/static/img/밀크티.jpg">
+
+        <%-include("test2_1.ejs")%>
+
+        <a href="/test2_1">test2.1 이동</a>
+        <a href="/test2_2">test2.2 이동</a>
+
+    </body>
+</html>

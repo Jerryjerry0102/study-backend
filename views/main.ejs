@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="post" action="/post">
+    <!-- get방식으로 보내면 url에 내가 보낸 정보가 ?뒤에 노출이 된다. -->
+    <!-- post는 정보가 url에 노출되지 않는다 -->
+    <!-- 그니까 회원가입, 로그인, 중요정보를 담고 있을 때는 get요청을 하면 x -->
+        <input type="text" name="name">
+        <input type="text" name="gender">
+        <input type="text" name="age">
+        <input type="radio" name="snack" value="basic">새우깡
+        <input type="radio" name="snack" value="spicy">매운새우깡
+        <select name="">
+            <option value=""></option>
+            <option value=""></option>
+        </select>
+        <button type="submit">전송</button>
+        <button type="reset">리셋</button>
+        <!-- submit을 쓰게 되면 action에 적은 주소로 페이지 이동을 하게 된다. -->
+        <!-- action이 없으면 새로고침 됨. -->
+        <!-- onclick해서 함수를 적는 경우는 type="button"을 적으면 된다  -->
+        <!-- submit은 폼 데이터를 제출하는 제출 버튼임을 명시함 -->
+        <!-- reset은 폼 데이터를 초기값으로 리셋하는 리셋 버튼임을 명시함 -->
+    </form>
+    <script>
+        // 동적으로 폼 전송하기
+        console.log("안녕하세요:)");
+        console.log("안녕하세요:)");
+        console.log("안녕하세요:)");
+        console.log("안녕하세요:)");
+        setTimeout(function(){
+            console.log("안녕하세요:)2222");
+        }, 2000);
+        console.log("안녕하세요:)");
+    </script>
+</body>
+</html>

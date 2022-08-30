@@ -1,0 +1,61 @@
+<!-- Ajax -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <form>
+    <!-- form태그만 썼다. 페이지 이동 안 할 거임 -->
+        이름 <input type="text" name="name">
+        성별
+        <input type="radio" name="gender" value="남">남자
+        <input type="radio" name="gender" value="여">여자
+
+        <button type="button" onclick="dynamicForm();">전송</button>
+    </form>
+    <div>
+
+    </div>
+
+    <script>
+        // 동적으로 폼 전송하기
+
+        // 동기라면 setTimeout에서 안녕하세요 2초뒤에 나온 뒤 그 다음 안녕하세요가 나와야 하지만
+        // 비동기이기 때문에 마지막 안녕하세요까지 5개의 안녕하세요가 나오고 그 이후에 2초뒤 안녕하세요가 나온다.
+        console.log("안녕하세요:)");
+        console.log("안녕하세요:)");
+        console.log("안녕하세요:)");
+        console.log("안녕하세요:)");
+        setTimeout(function(){
+            console.log("안녕하세요:)2222");
+        }, 2000);
+        console.log("안녕하세요:)");
+
+        //
+        function dynamicForm(){
+            var form = document.querySelector("form");
+            var data1 = {
+                name: form.name.value,  
+                gender: form.gender.value  
+            }
+            $.ajax({
+                url: "/get/ajax",    //form에서 사용했던 action을 의미 이동시킬 페이지를 의미
+                type: "GET",    //get을 사용해도 url의 변화는 없음.
+                                // 그럼 get과 post의 차이는 무엇인가? 
+                data: data1,
+                success: function(data){
+                    console.log(data);
+                    $("div").html(data.name);
+                }
+            })
+        }
+        // 동적 form전송은 애초에 페이지 이동이 일어나지 않는다.
+    </script>
+</body>
+</html>

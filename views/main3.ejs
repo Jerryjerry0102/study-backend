@@ -1,0 +1,53 @@
+<!-- Axios -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- axios cdn -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <form>
+        <!-- form태그만 썼다. 페이지 이동 안 할 거임 -->
+        이름 <input type="text" name="name">
+        성별
+        <input type="radio" name="gender" value="남">남자
+        <input type="radio" name="gender" value="여">여자
+
+        <button type="button" onclick="dynamicForm();">전송</button>
+    </form>
+    <div>
+
+    </div>
+    <script>
+    function dynamicForm(){
+        var form = document.querySelector("form");
+        var data1 = {
+            name: form.name.value,  
+            gender: form.gender.value  
+        }
+        axios({
+            url: "/get/axios",   // 요청할 주소
+            method: "get",    // 통신하고자 하는 방식
+            params : data1      // get요청할 때는 params. post요청일 경우 data로
+                                // params: URL파라미터
+                                // get방식으로 보낼 때 ? 뒤에 객체로 보내는 것
+                                // {key:value, key:value}로 작성한다.
+                                // request의 query가 받는다.
+        }).then((response)=>{  //function(response)랑 같다
+            // console.log(response);
+            console.log(response.data);
+            // console.log(response.status);
+            // console.log(response.statusText);
+            // console.log(response.headers);
+            // console.log(response.config);
+        })
+    }
+    </script>
+</body>
+</html>

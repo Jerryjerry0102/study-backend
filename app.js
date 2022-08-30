@@ -1,188 +1,117 @@
-const express = require("express");           // express모듈 요청
-const app = express();                        // app을 express프레임워크로 킨다
-app.set("view engine", "ejs")                 // app에 view engine을 설치, ejs를 템플릿으로
-app.use("/static", express.static("static"))  // 경로
+const express = require("express");           
+const app = express();     
 const port = 8000;
-// localhost:8000/
-app.get("/", (req,res)=>{
-    var person = [
-        { name: "김소연", gender: "여자" },
-        { name: "홍길동", gender: "남자" }
-    ]
-    res.render("test", {per: person});
-});
-// localhost:8000/test
 
-app.get("/test1", (req,res)=>{
-    res.render("test1", {});
+app.set("view engine", "ejs");      
+
+app.use("/static", express.static("static")) ;
+app.use('/static', express.static('public'));
+
+// 8.30 수업
+app.use(express.urlencoded({extended:false}));
+app.use(express.json());
+//
+
+var person = [
+    { name: "박재희", gender: "여자", age: 25, hobby: "책읽기"},
+    { name: "홍길동", gender: "남자", age: 29, hobby: "축구하기"},
+    { name: "김민지", gender: "여자", age: 26, hobby: "영화보기"},
+    { name: "박승호", gender: "남자", age: 28, hobby: "음악듣기"}
+]
+
+app.get('/',(req, res) => { 
+    res.render('test2_0',{person: person});
 });
 
-// app.get("/test2", (req,res)=>{
-//     var one = "this is one"
-//     var two = "this is two"
-//     res.render("test2", {one: one, two: two});
-// });
-app.get("/test2", (req,res)=>{
-    res.render("test2", {
-        one: "this is one",
-        two: "this is two"});
+app.get('/test2_1',(req, res) => {
+    res.render('test2_1',{});
+});
+
+app.get('/test2_2',(req, res) => {
+    res.render('test2_2',{person: person});
+});
+
+
+// 8.30 수업 
+app.get("/main", (req, res) => {
+    res.render('main', {})
 })
-// 위에 2개 다 사용 가능
+app.get("/get", (req, res)=>{
+    console.log(req.query);
+    // cleint가 요청하는 정보를 담고 있는게 req
+    // 여기서 console를 찍으면 서버에 console이 찍힘
+    res.render("login", {
+        name: req.query.name
+        // 이렇게 적으면 name정보만 불러오게 됨.
+    });
+})
+app.post("/post", (req, res) => {
+    console.log(req.body);
+    // post를 통해서 서버에 form전송을 보내면 req.body에 정보가 담긴다.
+    res.render("login", {
+        name: req.body.name,
+        gender: req.body.gender,
+
+    })
+})
+// cleint에서 /post url로 post요청이 들어올 때 아래 함수를 실행시키겠따.
+// post는 인터넷 url로 직접 접속할 수 없음.
+// 주소를 잘 선언해 놨지만 /post라고 하고 접속하면 접속할 수 없다. 위에 적은 /get은 가능하다
+app.get("/main2", (req, res) => {
+    res.render("main2",{});
+})
+
+app.get("/get/ajax", (req, res) => {
+    console.log(req.query);
+    var data = {
+        name: req.query.name,
+        gender: req.query.gender
+    }
+    res.send(req.query);
+})
+
+app.get("/main3", (req, res) => {
+    res.render("main3",{});
+})
+
+app.get("/get/axios", (req, res) => {
+    console.log(req.query);
+    var data = {
+        name: req.query.name,
+        gender: req.query.gender
+    }
+    res.send(req.query);
+})
+
+
+// 8.30 실습
+app.get("/prac1", (req, res) => {
+    res.render('prac1', {})
+})
+app.post("/prac1_post", (req, res) => {
+    console.log(req.body);
+    res.render("prac1_post", {
+        name: req.body.name,
+        gender: req.body.gender,
+        birth: req.body.birth
+    })
+    res.send(req.query);
+})
+
+app.get("/prac2", (req, res) => {
+    res.render("prac2", {})
+})
+app.get("/get/axios2", (req, res) => {
+    console.log(req.query);
+    var data = {
+        name: req.query.name,
+        gender: req.query.gender,
+        birth: req.query.birth,
+        interest: req.query.interest
+    }
+    res.send(req.query);
+})
 
 app.listen(port, ()=>{
     console.log("server open: ", port);
-})
-
-
-
-// require은 이 javascript파일이 해당 모듈을 쓰겠다고 요청하는 것. 
-// 그러니까 const express안에는 express 요청이 들어가고 ejs 안에는 ejs 모듈 요청정보가 들어가는 것이다.
-
-// app.get은 주소창에 GET 방식으로 요청을 받았을 때 처리할 사항을 나타낸다.
-// 첫번째 인자는 도메인 뒤에 붙는 주소, 두번째 인자는 그 주소로 들어왔을 때 처리할 사항을 적는 함수를 준다.
-
-// app.get안에 있는 (req,res)에서 req는 요청 오브젝트, res는 응답 오브젝트를 나타낸다.
-// 그러니까 req는 클라이언트에서 요청한 사항을 가지고 있는 오브젝트이고,
-// res는 서버에서 클라이언트로 응답을 보낼 때 쓰는 오브젝트이다.
-
-// res.render을 볼 수 있는데, 응답 오브젝트 res로 render,
-// 즉 페이지를 그리고 응답을 클라이언트로 보내는 것이다.
-// render함수는 첫 번째인자로 페이지 파일명, 두번째 인자로 보낼 값들을 object형식으로 준다.
-
-// 단, 파일명을 적을 때는 확장자명은 뺀다. 
-// 저 위에 set함수의 두 번째 인자인 "ejs" 확장자를 가진 파일만 읽어내기 때문이다.
-
-// app.listen 함수는 js파일을 실행 후 계속 대기하면서 클라이언트에서 요청을 받는 함수이다.
-// node app.js를 하면 실행 결과가 나오고 바로 종료되지만,
-// listen 함수를 넣으면 강제종료나 오류가 있기 전까지는 꺼지지 않는다.
-// 첫 번째 인자는 포트번호, 두 번째 인자는 실행하는 동안 처리할 함수이다.
-// 이 listen 함수를 넣음으로 서버의 역할을 하게 되는 것이다.
-
-
-
-// app.js코드에서 app.get 코드를 늘려서 여러 디렉토리를 만들 수 있다.
-
-// get()은 주소창에 입력 받았을 때 실행할 사항들을 나타내는 라우트 함수이다.
-// 도메인 뒤에 붙은 주소가 해당 함수에 들어가 있는 값과 일치하면 해당 함수에 들어가 있는 함수가 실행된다.
-
-// 보통 사이트에는 도메인 뒤에 붙은 경로로 페이지를 구분한다.
-// 예를 들면 http://yahohococo.tistory.com/category/BOJ 처럼.
-// 우리는 app.js 안에 get들을 여러개 써서 경로를 많이 만들 수 있다.
-
-// 일단 views 폴더에 test1.ejs를 만들어 주자.
-// 이제 app.js로 돌아가 test2.ejs를 띄울 get함수를 만들자.
-
-// 코드를 보면 알 수 있듯 이제 도메인 뒤에 /test1 이나 /test2가 붙으면 test1.ejs와 test2.ejs가 띄워지게 될 것이다.
-
-// 만약 get 함수 두 개의 디렉토리 주소가 같으면 첫번째 get함수가 실행된다.
-// 실수로 똑같은 주소를 두 개 만들어서 get으로 쓰면 무조건 먼저나온 함수가 실행된다.
-
-// 만약 node app.js를 켜둔채로 app.js를 수정하면,
-// node에는 수정하기 이전의 파일이 돌아가고 있으므로 아무 변동이 없다.
-// 수정했다면 node를 종료시키고 다시 켜야한다.
-// 강제종료 방법은 ctrl+c 이다.
-
-// node app.js를 켜둔채로 ejs를 수정하는 것은 상관없다.
-// 켜둔채로 페이지를 새로고침 하면 바뀐 ejs 파일을 띄워준다.
-
-// // post는 아직 안 배움. 집가서 해보자 //
-
-
-
-// [3][0]ejs란?
-
-// Embedded JavaScript의 약자로, 쉽게 말하면 자바스크립트가 내정되어 있는 html파일이다.
-// html에도 자바스크립트를 넣을 수 있지 않냐고?
-// html안에 내장되어 있는 것과 바깥에서 건드리는 것의 차이다. // 그림 있음 //
-
-// ejs는 html의 태그처럼 자바스크립트 내용을 삽입할 수 있다.
-// 매우 큰 강점인데, 이것을 이용해 페이지를 동적으로 짜는 것이 수월해진다.
-// 일반 html 파일은 무조건 <script> 태그를 이용해 분리를 시켜야 하지만,
-// ejs는 지정된 태그를 통해 스크립트 내용을 하나의 요소처럼 사용될 수 있게 한다.
-// !또한 서버에서 보낸 변수를 가져와 사용할 수 있다.!
-// 지난 글을 살펴보면 변수를 넣을 수 있는 부분이 있었다.
-
-
-// [3][1] 코드를 내장시키자 - <% %> 태그
-
-// ejs에는 자바스크립트를 내장 시킬 수 있는 2가지의 태그가 있다.
-// 가장 기본이 되는 것은 <% %>이다.
-// 저 사이에 원하는 자바스크립트 내용을 넣으면 된다. 예시를 보자면
-
-    // <body>
-    //     <% for (var i = 0; i < 5; i++) { %>}
-    //         <h1>안방으로 들어왔습니다.</h1>
-    //     <% } %>
-    // </body>
-
-// test2.ejs를 수정한 것이다.
-// '안방으로 들어왔습니다.'가 5번 나올 것이다.
-
-// 주의할 점은 <% %> 안에는 무조건 자바스크립트 코드가 들어가야한다.
-// 그리고 줄바꿈을 하면 새로운 <% %>를 이용해야 한다.
-
-
-// [3][2] 변수값을 내장시키자 - <%=%> or <%-%> 태그
-
-// 또 하나의 태그로는 <%=%> 혹은 <%-%> 태그가 있다.
-// 두 가지 표기법이 있지만 역할은 똑같다.
-// 이 태그의 역할은 해당 태그 안의 변수 값을 그대로 코드처럼 옯겨주는 것.
-// 동적으로 페이지를 만들 때 아주아주 편하게 해주는 기능이다.
-// 이 태그를 썼을 때는 변수의 자료형 이런 거 생각하지말고 그냥 코드로 들어가 있다고 생각해야된다.
-// 예를 들면,
-
-    // <html>
-    //     <head>
-    //         <title>2222</title>
-    //     </head>
-    //     <body>
-    //         <% for(var i = 0; i < 5; i++){ %>
-    //             <h1>안방으로 <%= i+1 %>번째 들어왔습니다.</h1>
-    //         <% } %>
-    //     </body>
-    // </html>
-
-// 아까 test2.ejs를 수정한 것이다. 결과를 예측해보자.
-// <% %>안 for문으로 묶인 공간 안에 <%= i+1 %>를 넣었으니 i가 1부터 5까지 증가하면서 출력 될 것이다.
-// 이와 같이 <% %>로 묶은 범주안에 <%=%>를 쓰는 식으로 혼용해서 쓸 수도 있다.
-
-// 위에서 말했듯 이 태그 안에 있는 변수는 그 값이 코드처럼 들어가게 된다.
-// 그래서 변수의 자료형이 문자열이라고 실수를 해서는 안된다.
-// 코드로 삽입하면서 문자열 형식으로 나타내고 싶을 때는 "<%=%>"식으로 치면 된다.
-
-    // <%= "test1" %>     // x //
-    // "<%= "test2" %>"   // o //
-
-// <% %>, <% = %> 태그는 ejs 안에 넣은 자바스크립트 코드에도 내장시킬 수 있다.
-
-
-// [3][3] 서버에서 넘겨준 변수 사용하기
-
-// 사실 방법이랄게 없을 정도로 간단하다.
-// 예시를 위해 app.js에서 test2.ejs를 render하는 부분에 변수를 넘겨줘보자.
-
-    // app.get("/test2", (req,res)=>{
-    //     var one = "this is one"
-    //     var two = "this is two"
-    //     res.render("test2", {one: one, two: two});
-    // });
-
-    // app.get("/test2", (req,res)=>{
-    //     res.render("test2", {
-    //         one: "this is one",
-    //         two: "this is two"});
-    // })
-
-// // 위에 두가지 예시 모두 사용 가능하다. //
-// 이렇게 하면 이제 test2.ejs로 변수 one과 two가 넘어가게 된다.
-// 그러면 test2.ejs로 넘어가 one과 two를 써보면 된다.
-// 그냥 넘겨진 변수명을 그대로 쓰면 됨.
-// 별다른 방법 없이 그냥 서버에서 넘긴 변수명을 쓰면 ejs에서 그대로 가져와 쓸 수 있다.
-
-
-//[3][4] <% %>, <%=%> 사용 시 유의점
-
-// 가장 중요한 부분이다.
-// // 이건 웹 사이트 들어가서 보자//
-
-
+});
