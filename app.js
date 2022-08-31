@@ -1,3 +1,4 @@
+const e = require("express");
 const express = require("express"); 
 const app = express();  
 // 8.31
@@ -122,7 +123,7 @@ app.post("/prac1_post", (req, res) => {
 })
 
 app.get("/prac2", (req, res) => {
-    res.render("prac2", {})
+    res.render("prac2", {});
 })
 app.get("/get/axios2", (req, res) => {
     console.log(req.query);
@@ -133,6 +134,27 @@ app.get("/get/axios2", (req, res) => {
         interest: req.query.interest
     }
     res.send(req.query);
+})
+
+app.get("/prac3", (req, res) => {
+    res.render("prac3", {
+        id: "miso6495",
+        password: "mm6495"
+    });
+})
+app.post("/get/axios3", (req, res) => {
+    console.log(req.body);
+    if(req.body.id == "miso6495" & req.body.password == "mm6495"){
+        res.send("성공")
+    }
+    else{
+        res.send("실패")
+    }
+    // var data = {
+    //     id: req.body.id,
+    //     password: req.body.password
+    // }
+    // res.send(req.body);
 })
 
 // 집에서 혼자
@@ -147,6 +169,15 @@ app.post("/prac11_post", (req, res) => {
         year: req.body.year
     })
     // res.send(req.body);
+})
+
+app.get("/prac22", (req, res) => {
+    res.render("prac22",{});
+})
+
+app.get("/get/axios22", (req, res) => {
+    console.log(req.query);
+    res.send(req.query);
 })
 
 // 8.31
@@ -172,13 +203,13 @@ app.post("/upload", upload.single("userfile") ,(req, res) => {  //upload.single�
 
 
 // 8.31 실습
-app.get("/prac3", (req, res) => {
-    res.render('prac3', {})
+app.get("/prac4", (req, res) => {
+    res.render('prac4', {})
 })
-app.post("/prac3_upload", upload.single("photo"), (req, res) => {
+app.post("/prac4_upload", upload.single("photo"), (req, res) => {
     console.log(req.body);
     console.log(req.file);
-    res.render("prac3_upload", {
+    res.render("prac4_upload", {
         photo: req.file.filename
     })
     // res.send("업로드 성공");
