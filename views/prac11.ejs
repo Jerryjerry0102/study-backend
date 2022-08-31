@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 </head>
 <body>
-    <form method="get" action="prac11_post">
+    <form method="post" action="/prac11_post">
         이름<input type="text" name="name">
         <br>
         성별
@@ -18,16 +18,19 @@
         <br>
         생년월일
         <select name="year" value="i">
+            <option value=""></option>
             <% for(i=1990; i<=2022; i++){ %>
                 <option> <%= i %> </option>
             <% } %>
         </select>년
         <select name="month" value="i">
+            <option value=""></option>
             <% for(i=1; i<=12; i++){ %>
                 <option> <%= i %> </option>
             <% } %>
         </select>월
         <select name="day" value="i">
+            <option value=""></option>
             <% for(i=1; i<=31; i++){ %>
                 <option> <%= i %> </option>
             <% } %>

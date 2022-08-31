@@ -1,0 +1,23 @@
+<!-- 8.31 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="userfile" multiple>
+        <input type="file" name="userfile" multiple>
+        <input type="text" name="name">
+        <button type="submit">업로드</button>
+    </form>
+</body>
+
+<!-- form의 enctype은 multipart/form-data  -->
+<!-- button의 type을 지정하지 않으면 submit으로 하겠다는 의미 -->
+<!-- 동적 폼 전송 아닐 경우에는 submit 맞으면 type="button" -->
+<!-- 파일을 여러 개 upload하고 싶으면 multiple을 입력 app.js에서도 upload.array("userfile")로 수정 -->
+</html>

@@ -34,19 +34,23 @@
         axios({
             url: "/get/axios",   // 요청할 주소
             method: "get",    // 통신하고자 하는 방식
-            params : data1      // get요청할 때는 params. post요청일 경우 data로
+            params : data1,      // get요청할 때는 params. post요청일 경우 data로
                                 // params: URL파라미터
                                 // get방식으로 보낼 때 ? 뒤에 객체로 보내는 것
                                 // {key:value, key:value}로 작성한다.
                                 // request의 query가 받는다.
+
+            timeout: 3000       //8.31
+
         }).then((response)=>{  //function(response)랑 같다
             // console.log(response);
             console.log(response.data);
             // console.log(response.status);
             // console.log(response.statusText);
             // console.log(response.headers);
-            // console.log(response.config);
-        })
+            // console.log(response.config)
+
+        }).catch((err) => console.log(err));    
     }
     </script>
 </body>

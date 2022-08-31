@@ -1,11 +1,29 @@
-const express = require("express");           
-const app = express();     
+const express = require("express"); 
+const app = express();  
+// 8.31
+const multer = require("multer");
+const path = require("path");
+const upload = multer({
+    storage: multer.diskStorage({
+        destination(req, file, done){
+            done( null, 'uploads/');
+        },
+        filename(req, file, done) {
+            const ext = path.extname(file.originalname);
+            done(null, req.body.id + ext);
+            // done(null, path.basename(file.originalname, ext) + Date.now() + ext);
+        },
+    }),
+    limits: { fileSize: 5*1024*1024 }, // 5MB 파일용량제한
+})
+//   
 const port = 8000;
 
 app.set("view engine", "ejs");      
 
-app.use("/static", express.static("static")) ;
+app.use("/static", express.static("static"));
 app.use('/static', express.static('public'));
+app.use("/uploads", express.static("uploads"));
 
 // 8.30 수업
 app.use(express.urlencoded({extended:false}));
@@ -100,7 +118,7 @@ app.post("/prac1_post", (req, res) => {
     //     gender: req.body.gender,
     //     birth: req.body.birth
     // })
-    res.send(req.query);
+    res.send(req.body);
 })
 
 app.get("/prac2", (req, res) => {
@@ -119,18 +137,51 @@ app.get("/get/axios2", (req, res) => {
 
 // 집에서 혼자
 app.get("/prac11", (req, res) => {
-    console.log(req.query);
     res.render("prac11", {})
 })
-app.get("/prac11_post", (req, res) => {
-    // res.render("prac11_post",{
-    //     name: req.query.name,
-    //     gender: req.query.gender,
-    //     year: req.query.year,
-    //     month: res.query.month,
-    //     day: res.query.day
-    // })
-    res.send(req.query);
+app.post("/prac11_post", (req, res) => {
+    console.log(req.body);
+    res.render("prac11_post",{
+        name: req.body.name,
+        gender: req.body.gender,
+        year: req.body.year
+    })
+    // res.send(req.body);
+})
+
+// 8.31
+app.get("/aaaa", (req, res) => {
+    res.render('aaaa', {})
+})
+
+app.get("/bbbb", (req, res) => {
+    res.render('bbbb', {})
+})
+
+app.post("/upload", upload.single("userfile") ,(req, res) => {  //upload.single은 파일을 하나 업로드하겠다는 의미 ""은 input name에 매칭됨. 여러개는 array라고 입력
+    console.log(req.body);
+    console.log(req.file);                      // file은 파일 하나일 때 files는 여러 개 전송할 때
+    res.send("업로드 성공");
+})
+
+// app.post("/upload", upload.fields([{name:"userfile"},{name:"usefile"}]) ,(req, res) => {  // input이 두개 일때 fields
+//     console.log(req.body);
+//     console.log(req.files);                     
+//     res.send("업로드 성공");
+// })
+
+
+// 8.31 실습
+app.get("/prac3", (req, res) => {
+    res.render('prac3', {})
+})
+app.post("/prac3_upload", upload.single("photo"), (req, res) => {
+    console.log(req.body);
+    console.log(req.file);
+    res.render("prac3_upload", {
+        photo: req.file.filename
+    })
+    // res.send("업로드 성공");
 })
 
 app.listen(port, ()=>{
