@@ -142,7 +142,7 @@ app.get("/prac3", (req, res) => {
         password: "mm6495"
     });
 })
-app.post("/get/axios3", (req, res) => {
+app.post("/post/axios3", (req, res) => {
     console.log(req.body);
     if(req.body.id == "miso6495" & req.body.password == "mm6495"){
         res.send("성공")
@@ -150,10 +150,6 @@ app.post("/get/axios3", (req, res) => {
     else{
         res.send("실패")
     }
-    // var data = {
-    //     id: req.body.id,
-    //     password: req.body.password
-    // }
     // res.send(req.body);
 })
 
@@ -174,11 +170,24 @@ app.post("/prac11_post", (req, res) => {
 app.get("/prac22", (req, res) => {
     res.render("prac22",{});
 })
-
 app.get("/get/axios22", (req, res) => {
     console.log(req.query);
     res.send(req.query);
 })
+
+app.get("/prac33", (req, res) => {
+    res.render("prac33", {});
+})
+app.post("/post/axios33", (req, res) => {
+    console.log(req.body);
+    if(req.body.id == "miso6495" && req.body.password == "mm6495"){
+        res.send("로그인 성공");
+    }
+    else{
+        res.send("로그인 실패");
+    }
+})
+
 
 // 8.31
 app.get("/aaaa", (req, res) => {

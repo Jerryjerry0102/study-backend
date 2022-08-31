@@ -50,14 +50,30 @@
     <script>
         function signUp(){
             var form = document.querySelector("form");
+            var interest = [];
+
+            // javascript 이용
+            for( var i=0; i < document.getElementsByName("interest").length; i++){
+                if(document.getElementsByName("interest")[i].checked == true){
+                    interest.push(document.getElementsByName("interest")[i].value);
+                }
+            }
+
+            // jquery 이용
+            // $("input[name='interest']:checked").each(function(){
+            //     interest.push($(this).val());
+            // });  
+
+            console.log(interest);
             var data1 = {
                 name: form.name.value,  
                 gender: form.gender.value,
                 year: form.year.value,
                 month: form.month.value,
                 day: form.day.value,
-                interest: form.interest.value
+                interest: interest
             }
+
             axios({
                 url: "/get/axios22",   // 요청할 주소
                 method: "get",    // 통신하고자 하는 방식

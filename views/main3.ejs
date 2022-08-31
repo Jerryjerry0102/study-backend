@@ -32,13 +32,13 @@
             gender: form.gender.value  
         }
         axios({
-            url: "/get/axios",   // 요청할 주소
-            method: "get",    // 통신하고자 하는 방식
-            params : data1,      // get요청할 때는 params. post요청일 경우 data로
+            url: "/get/axios",  // 통신하고자 하는 주소 form에서 action에 해당 내가 데이터를 보내고자 하는 주소
+            method: "get",      // 통신하고자 하는 방식
+            params : data1,     // get요청할 때는 params. post요청일 경우 data로
                                 // params: URL파라미터
                                 // get방식으로 보낼 때 ? 뒤에 객체로 보내는 것
                                 // {key:value, key:value}로 작성한다.
-                                // request의 query가 받는다.
+                                // request의 query 또는 body로 데이터를 보낸다
 
             timeout: 3000       //8.31
 
