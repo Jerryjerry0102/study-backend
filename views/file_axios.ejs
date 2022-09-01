@@ -1,0 +1,44 @@
+<!-- 8.31 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- axios cdn -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <form>
+        <input type="file" name="userfile" id="dynamic_file">
+        <input type="text" name="name">
+        <button type="button" onclick="fileUpload();">업로드</button>
+    </form>
+
+    <script>
+        function fileUpload(){
+            const formData = new FormData();
+            const file = document.getElementById("dynamic_file");
+            formData.append("userfile", file.files[0]);
+            // jquery append아니고 formData의
+            //
+
+            axios({
+                headers: {
+                    "Content-Type" : "multipart/form-data"
+                },
+                url: "/dynamicFile",
+                method: "post",
+                data: formData
+            }).then((response) => console.log("업로드 성공"));
+        }
+    </script>
+</body>
+
+<!-- 동적 폼전송일 경우 form속성 다 지우고 -->
+<!-- 버튼도 type="button"으로 바꾸기 -->
+<!-- type=file은 value를 바꿀 수 없고 value를 가져올 수 없다 -->
+<!-- 그래서 const formData를 하는 것.  -->
+
+</html>

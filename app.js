@@ -190,21 +190,33 @@ app.post("/post/axios33", (req, res) => {
 
 
 // 8.31
-app.get("/aaaa", (req, res) => {
-    res.render('aaaa', {})
+app.get("/file", (req, res) => {
+    res.render('file', {})
 })
 
-app.get("/bbbb", (req, res) => {
-    res.render('bbbb', {})
+app.get("/file_axios", (req, res) => {
+    res.render('file_axios', {})
 })
 
-app.post("/upload", upload.single("userfile") ,(req, res) => {  //upload.single은 파일을 하나 업로드하겠다는 의미 ""은 input name에 매칭됨. 여러개는 array라고 입력
+app.post("/upload", upload.fields([{name:"name"},{name:"usefile"}]), function(req, res){  
+//upload.single은 파일을 하나 업로드하겠다는 의미 ""은 input name에 매칭됨. 여러개는 array라고 입력
+    console.log(req.files);              // file은 파일 하나일 때 files는 여러 개 전송할 때
     console.log(req.body);
-    console.log(req.file);                      // file은 파일 하나일 때 files는 여러 개 전송할 때
     res.send("업로드 성공");
 })
 
-// app.post("/upload", upload.fields([{name:"userfile"},{name:"usefile"}]) ,(req, res) => {  // input이 두개 일때 fields
+app.get("/file_axioss", (req, res)=> {
+    res.render("file_axioss", {})
+})
+
+app.post("/dynamicFile", upload.fields([{name: "name"}, {name:"userfile"}]), (req, res) => {
+    console.log(req.files);
+    console.log(req.body);
+    res.send("업로드");
+})
+
+// app.post("/upload", upload.fields([{name:"userfile"},{name:"usefile"}]) ,(req, res) => {  
+// // input이 두개 일때 fields 그리고 가로 안에 저렇게 name입력 해줘야 함
 //     console.log(req.body);
 //     console.log(req.files);                     
 //     res.send("업로드 성공");
@@ -213,7 +225,7 @@ app.post("/upload", upload.single("userfile") ,(req, res) => {  //upload.single�
 
 // 8.31 실습
 app.get("/prac4", (req, res) => {
-    res.render('prac4', {})
+    res.render('prac4', {});
 })
 app.post("/prac4_upload", upload.single("photo"), (req, res) => {
     console.log(req.body);
@@ -227,3 +239,16 @@ app.post("/prac4_upload", upload.single("photo"), (req, res) => {
 app.listen(port, ()=>{
     console.log("server open: ", port);
 });
+
+
+// 집에서 혼자
+app.get("/prac44", (req, res) => {
+    res.render("prac44", {});
+})
+app.post("/prac44_upload", upload.single("photo"), (req, res) => {
+    console.log(req.file.filename);
+    console.log(req.body);
+    res.render("prac44_upload", {
+        photo:req.file.filename
+    })
+});        
