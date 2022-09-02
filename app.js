@@ -1,4 +1,3 @@
-const e = require("express");
 const express = require("express"); 
 const app = express();  
 // 8.31
@@ -11,7 +10,7 @@ const upload = multer({
         },
         filename(req, file, done) {
             const ext = path.extname(file.originalname);
-            done(null, req.body.id + ext);
+            done(null, req.body.name + ext);
             // done(null, path.basename(file.originalname, ext) + Date.now() + ext);
         },
     }),
@@ -236,10 +235,6 @@ app.post("/prac4_upload", upload.single("photo"), (req, res) => {
     // res.send("업로드 성공");
 })
 
-app.listen(port, ()=>{
-    console.log("server open: ", port);
-});
-
 
 // 집에서 혼자
 app.get("/prac44", (req, res) => {
@@ -251,4 +246,23 @@ app.post("/prac44_upload", upload.single("photo"), (req, res) => {
     res.render("prac44_upload", {
         photo:req.file.filename
     })
-});        
+});  
+
+// prac4 axios버전
+app.get("/prac4_axios", (req, res) => {
+    res.render("prac4_axios", {});
+})
+app.post("/prac4_axios_upload", upload.fields([{name: "id"}, {name:"password"}, {name:"name"}, {name:"age"}, {name:"photo"}]), (req, res) =>{
+    console.log(req.files);
+    console.log(req.body);
+    console.log(req.body.id);
+    console.log(req.body.name);
+    res.send(req.files);
+})
+// img파일의 filename이 req.body.id + ext로 되게 설정을 했고 console로 req.body.id를 해도 잘 나오는데
+// 어째서 저장은 undefined.jpg로 나오는지 정말 모르겠어요.
+// 살려주세요. 
+
+app.listen(port, ()=>{
+    console.log("server open: ", port);
+});
