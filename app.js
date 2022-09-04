@@ -104,6 +104,8 @@ app.get("/get/axios", (req, res) => {
         gender: req.query.gender
     }
     res.send(req.query);
+    // axios 백에서는 res.send()를 이용해 데이터를 보낸다.
+    // res.send를 이용하면 데이터를 클라이언트로 다시 보낼 수 있다.
 })
 
 
