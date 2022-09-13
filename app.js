@@ -30,6 +30,25 @@ app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 //
 
+// 9.13 //
+const cookieParser = require("cookie-parser");
+app.use(cookieParser()); // module 사용할 때 이렇게 연결 지어줘야 함
+
+const session = require("express-session");
+app.use(session({
+    secret: '1234', // 암호화할 때 사용할 문자열(cookie는 선택 session은 암호화 기본)
+    resave: false,              // 요청이 들어올 때마다 session에 저장을 할 건지 말 건지 
+    saveUninitialized: true,    // resave랑 이거는 그냥 외우자
+    // secure: true,               // https 보안서버에서만 동작하겠다는 의미
+    cookie: {
+        maxAge: 60000,
+        httpOnly: true
+    }
+    // 원래 session은 브라우저를 끄면 사라진다고(여기서는 다시 id발급) 했는데
+    // 이렇게 cookie를 설정해주면 60초 동안은 받은 id를 유지한다.
+}));
+//
+
 var person = [
     { name: "박재희", gender: "여자", age: 25, hobby: "책읽기"},
     { name: "홍길동", gender: "남자", age: 29, hobby: "축구하기"},
@@ -264,6 +283,131 @@ app.post("/prac4_axios_upload", upload.fields([{name: "id"}, {name:"password"}, 
 // img파일의 filename이 req.body.id + ext로 되게 설정을 했고 console로 req.body.id를 해도 잘 나오는데
 // 어째서 저장은 undefined.jpg로 나오는지 정말 모르겠어요.
 // 살려주세요. 
+
+
+// 9.13 cookie & session 수업
+// cookie
+app.get("/cookie", (req, res) => {
+    // res(서버에 응답할 때) cookie를 보내주겠다.
+    res.cookie('key1','value1',{
+        maxAge: 10000,      // 쿠키가 설정된 시간부터 30초 뒤까지 쿠키를 유지시키겠다. 
+                            // ms 단위, cookie 만료 시간 설정
+        // expires:,           // maxAge랑 역할은 같음, gnt단위, cookie 만료 시간 설정
+        // path: "/cookie",    // localhost:8000/cookie로 시작할 모든 주소에 cookie 적용
+        // secure: true,       // 보안서버(https)에서만 동작
+        // httpOnly: true      // ejs파일 script태그 안에서 원래 document.cookie로 접근 가능한데 
+                            // httpOnly: true 위처럼 접근 불가능
+                            // httpOnly: false 위처럼 접근 가능
+        // signed: true     // 쿠키암호화
+    })
+    res.render("index");
+})
+
+// cookie 확인
+app.get("/cookie/get", (req, res) => {
+    // 쿠키는 클라이언트에게 저장됨
+    // 클라이언트한테 있는 만들어진 쿠키 확인이니까 req
+    res.send(req.cookies);
+})
+
+// cookie prac(modal)
+app.get("/cookie/modal", (req, res) => {
+    res.render("modal");
+})
+app.post("/cookie/modal/check", (req, res) => {
+    res.cookie('cookie','check',{
+        maxAge: 5000, 
+        httpOnly: false
+    })
+    res.send("쿠키생성");
+})
+
+// session //
+app.get("/session", (req, res) => {
+    res.session.key1 = "value1";
+    console.log(req.session)
+    res.render("index")
+})
+
+// session // login
+app.get("/session/main", (req, res) => {
+    console.log(req.session);
+    if(req.session.user != undefined){
+        res.render("session_main" , { login: true, user: req.session.user });
+    }else{
+        res.render("session_main", { login: false });
+    }
+})
+app.get("/session/login", (req, res) => {
+    res.render("session_login");
+})
+var info = {
+    id: "a",
+    pw: "1"
+}
+app.post("/session/login", (req, res) => {
+    console.log(req.body.id)
+    if(req.body.id == info.id && req.body.pw == info.pw){
+        req.session.user = info.id;
+        res.send(true);
+    }else{
+        res.send("아이디 또는 비밀번호를 잘못 입력하셨습니다.");
+    }
+})
+
+app.get("/session/logout", (req, res) => {
+    req.session.destroy(function(){     // session 전체 삭제
+        res.redirect("/session/main");
+    }) 
+    // delete req.session.key1;            // 원하는 session key만 삭제하는 방법
+})
+//
+
+
+// 위에 실습 약간 다르게 한 번 더 //
+
+// main페이지
+app.get("/session/main2", (req, res) => {
+    res.render("session_main2");
+})
+
+// 로그인 페이지
+app.get("/session/login2", (req, res) => {
+    res.render("session_login2");
+})
+var info2 = {
+    id: "jerry",
+    pw: "0102"
+}
+app.post("/session/login2", (req, res) => {
+    console.log(req.body);
+    if(req.body.id == info2.id && req.body.pw == info2.pw){
+        req.session.user = info2.id;
+        res.render("session_profile", {user: req.session.user})
+    }
+    else{
+        res.send("<script> alert('아이디 또는 비밀번호를 잘못 입력하셨습니다.'); window.location = '/session/login2'; </script>")
+    }
+})
+
+// 프로필 페이지
+app.get("/session/profile", (req, res) => {
+    if(req.session.user != undefined ){  // user가 있으면 true가 나오고 없으면 undefined가 나올거임
+        res.render("session_profile");      // 로그인이 되어 있으면 profile로
+    }else{
+        res.redirect("/session/login2");     // 아니면 이미 만들어져있는 router로(get요청) 다시 이동시키겠다.
+    }
+})
+
+// 로그아웃
+app.get("/session/logout2", (req, res) => {
+    // delete req.session.key1; 
+    req.session.destroy(function(){     // session 전체 삭제
+        res.redirect("/session/main2");
+    }) 
+})
+//
+
 
 app.listen(port, ()=>{
     console.log("server open: ", port);

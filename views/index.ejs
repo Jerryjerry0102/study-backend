@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    console.log(document.cookie);
+
+    document.cookie ="user1=kdt1; expires=13 Sep 2022 6:58:00 GMT; path=/cookie";
+    document.cookie ="user2=kdt2; expires=13 Sep 2022 6:58:00 GMT; path=/cookie";
+    console.log(document.cookie);
+
+    // split으로 ;을 기준으로 잘라서 사용하면 된다.
+    let cookie = document.cookie.split(";");
+
+</script>
+<body>
+    hi
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!-- 9.13 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>    
+</head>
+<style>
+    .d_none{
+        display: none;
+    }
+    #myModal{
+        /* display: none; */
+        position: relative;
+        width: 300px;
+        padding: 40px 70px;
+        background-color: #fefefe;
+        border: 1px solid #888;
+        border-radius: 3px;
+    }
+    #myModal .modal_close_btn{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+</style>
+<script>
+</script>
+<body>
+    <!-- modal -->
+    <div id="myModal" class="">
+        <!-- modal content -->
+        <div class="modal_content">
+            <div>인터넷익스플로어(IE) 지원 종료 안내</div>
+            <div>인터넷익스플로어(IE) 서비스 지원이 2022년 6월 15일에 종료됨에 따라 안전하고 원할한 웹브라우저 이용을 위해 다른 웹브라우저를 이용해주시기 바랍니다</div>
+            <br>
+            <input type="checkbox" class="modal_checkbox"> 오늘 그만보기
+            <a class="modal_close_btn">닫기</a>
+        </div>
+    </div>
+
+    <script>
+        // 처음 페이지 들어왔을 때 쿠키 확인//
+        $(document).ready(function(){
+            // console.log(document.cookie);
+            // 집에서 for이용해서 cookie확인하는 거 해보기
+            if(document.cookie == "cookie=check" ){
+                $("#myModal").addClass("d_none");
+            }
+        })
+        // 닫기 버튼 처리 //
+        $(".modal_close_btn").click(function(){
+            $("#myModal").addClass("d_none");
+            // 오늘 그만보기 클릭되어 있을시
+            if($(".modal_checkbox").is(':checked') == true){
+            function check(){
+                axios({
+                    url: "/cookie/modal/check",
+                    method: "post"
+                }).then((response) => {
+                    console.log(response.data)
+                })
+            }
+            check();
+        }
+        })
+    
+    </script>
+</body>
+</html>
